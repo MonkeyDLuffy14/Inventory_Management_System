@@ -99,6 +99,9 @@ class EmpClass:
         self.EmpTable = ttk.Treeview(emp_frame,columns=("eid","name","email","gender","contact","dob","doj","pass","utype","address","salary"),yscrollcommand=scrolly.set,xscrollcommand=scrollx.set)
         scrollx.pack(side=BOTTOM,fill=X)
         scrolly.pack(side=RIGHT,fill=Y)
+        scrollx.config(command=self.EmpTable.xview)
+        scrolly.config(command=self.EmpTable.yview)
+
         self.EmpTable.heading("eid",text="EMP ID")
         self.EmpTable.heading("name", text="Name")
         self.EmpTable.heading("email", text="Email")
