@@ -42,7 +42,7 @@ class IMS:
         btn_category = customtkinter.CTkButton(sidebar, text="Category", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_product = customtkinter.CTkButton(sidebar, text="Products", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_sales = customtkinter.CTkButton(sidebar, text="Sales", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_wrhouse = customtkinter.CTkButton(sidebar, text="Warehouse", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_billing = customtkinter.CTkButton(sidebar, text="Billing", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_exit = customtkinter.CTkButton(sidebar, text="Exit", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
 
 
