@@ -1,15 +1,14 @@
 from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
-from tkinter import ttk
-
+from tkinter import ttk,messagebox
+import sqlite3
 
 class EmpClass:
     def __init__(self, root):
         self.root = root
         self.root.title("Inventory Management System")
         self.root.geometry("1100x500+310+170")
-        self.root.focus_force()
         self.root.config(bg="#898AA6")
 
         ##-----All variables-----##
@@ -23,7 +22,7 @@ class EmpClass:
         self.var_emp_dob = StringVar()
         self.var_emp_doj = StringVar()
         self.var_emp_email = StringVar()
-        self.var_emp_paswd = StringVar()
+        self.var_emp_pass = StringVar()
         self.var_emp_utype = StringVar()
         self.var_emp_salary = StringVar()
 
@@ -69,7 +68,7 @@ class EmpClass:
         lbl_utype = Label(self.root, text="User Type", font=("goudy old style", 15, "bold"), bg="#898AA6").place(x=900, y=270)
 
         txt_email = Entry(self.root, textvariable=self.var_emp_email, font=("goudy old style", 15, "bold"),bg="lightyellow").place(x=170, y=270, width=220)
-        txt_pass = Entry(self.root, textvariable=self.var_emp_paswd, font=("goudy old style", 15, "bold"),bg="lightyellow").place(x=570, y=270, width=220)
+        txt_pass = Entry(self.root, textvariable=self.var_emp_pass, font=("goudy old style", 15, "bold"),bg="lightyellow").place(x=570, y=270, width=220)
         cmb_utype = ttk.Combobox(self.root, textvariable=self.var_emp_utype,values=("Admin", "Employee"), state="readonly", justify=CENTER, font=("goudy old style", 15))
         cmb_utype.place(x=1020, y=270, width=220)
         cmb_utype.current(0)
@@ -83,7 +82,7 @@ class EmpClass:
         txt_salary = Entry(self.root, textvariable=self.var_emp_salary, font=("goudy old style", 15, "bold"),bg="lightyellow").place(x=650, y=320, width=220)
 
         ##----button---##
-        btn_save = customtkinter.CTkButton(self.root,text="Save",text_font=("groud old style",15,"bold"),bg_color="#898AA6",fg_color="blue",cursor="hand2").place(x=460,y=300,width=110,height=28)
+        btn_save = customtkinter.CTkButton(self.root,text="Save",command=self.add,text_font=("groud old style",15,"bold"),bg_color="#898AA6",fg_color="blue",cursor="hand2").place(x=460,y=300,width=110,height=28)
         btn_update = customtkinter.CTkButton(self.root, text="Update", text_font=("groud old style", 15, "bold"),bg_color="#898AA6",fg_color="green",cursor="hand2").place(x=560, y=300,width=110,height=28)
         btn_delete = customtkinter.CTkButton(self.root,text="Delete",text_font=("groud old style",15,"bold"),bg_color="#898AA6",fg_color="red",cursor="hand2").place(x=660,y=300,width=110,height=28)
         btn_clear = customtkinter.CTkButton(self.root, text="Clear", text_font=("groud old style", 15, "bold"),bg_color="#898AA6",fg_color="black",cursor="hand2").place(x=760, y=300,width=110,height=28)
@@ -128,6 +127,57 @@ class EmpClass:
         self.EmpTable.column("address", width=100)
         self.EmpTable.column("salary", width=100)
         self.EmpTable.pack(fill=BOTH,expand=1)
+
+        self.show()
+##-------------------------------------------------Func Query----------------------------##
+    ##---Insert--##
+    def add(self):
+        con=sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            if self.var_emp_id.get()=="":
+                messagebox.showerror("Error","Employee ID Required ",parent=self.root)
+            else:
+                cur.execute("Select * from employee where eid=?",(self.var_emp_id.get(),))
+                row=cur.fetchone()
+                if row!=None:
+                    messagebox.showerror("Error","This Employee ID Already Assigned,try different",parent=self.root)
+                else:
+                    cur.execute("Insert into employee (eid,name,email,gender,contact,dob,doj,pass,utype,address,salary) values(?,?,?,?,?,?,?,?,?,?,?)",(
+                                    self.var_emp_id.get(),
+                                    self.var_emp_name.get(),
+                                    self.var_emp_email.get(),
+                                    self.var_emp_gender.get(),
+                                    self.var_emp_contact.get(),
+                                    self.var_emp_dob.get(),
+                                    self.var_emp_doj.get(),
+                                    self.var_emp_pass.get(),
+                                    self.var_emp_utype.get(),
+                                    self.txt_add.get('1.0',END),
+                                    self.var_emp_salary.get(),
+                    ))
+                    con.commit()
+                    messagebox.showinfo("Success","Empployee Added Successfully !!",parent=self.root)
+                    self.show()
+
+        except Exception as ex:
+            messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self.root)
+
+    ##---show data--##
+    def show(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select * from employee")
+            rows=cur.fetchall()
+            self.EmpTable.delete(*self.EmpTable.get_children())
+            for row in rows:
+                self.EmpTable.insert('',END,values=row)
+        except Exception as ex:
+            messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
+
+
+
 
 
 if __name__ == "__main__":
