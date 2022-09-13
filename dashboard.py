@@ -1,13 +1,19 @@
 from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
-from employee import EmpClass
+from employee import empClass
+from supplier import supplierClass
+from category import categoryClass
+from product import productClass
+from sales import salesClass
+from billing import billingClass
 
 class IMS:
     def __init__(self, root):
         self.root = root
         self.root.title("Inventory Management System")
         self.root.geometry("1350x700+0+0")
+        #self.root.geometry("1600x780+0+0")
 
 
         ##------Title------##
@@ -38,11 +44,11 @@ class IMS:
         #self.icon_side = PhotoImage(file="Images/side.png")
         #btn_emp = Button(sidebar, text="Employee", font=("Times New Roman", 20, "bold"),image=self.icon_side,compound=LEFT,padx=10,anchor="w",bd=3,cursor="hand2",bg="#222831",activebackground="light blue").pack(side=TOP,fill=X)
         btn_emp = customtkinter.CTkButton(sidebar, text="Employee", text_font=("Times New Roman", 20, "bold"), command=self.employee, fg_color="#222831", corner_radius=0,bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_supplier = customtkinter.CTkButton(sidebar, text="Supplier",  text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_category = customtkinter.CTkButton(sidebar, text="Category", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_product = customtkinter.CTkButton(sidebar, text="Products", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_sales = customtkinter.CTkButton(sidebar, text="Sales", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_billing = customtkinter.CTkButton(sidebar, text="Billing", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_supplier = customtkinter.CTkButton(sidebar, text="Supplier",  text_font=("Times New Roman", 20, "bold"),command=self.supplier, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_category = customtkinter.CTkButton(sidebar, text="Category", text_font=("Times New Roman", 20, "bold"),command=self.category, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_product = customtkinter.CTkButton(sidebar, text="Products", text_font=("Times New Roman", 20, "bold"),command=self.product, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_sales = customtkinter.CTkButton(sidebar, text="Sales", text_font=("Times New Roman", 20, "bold"),command=self.sales, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_billing = customtkinter.CTkButton(sidebar, text="Billing", text_font=("Times New Roman", 20, "bold"),command=self.billing, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_exit = customtkinter.CTkButton(sidebar, text="Exit", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
 
 
@@ -69,13 +75,27 @@ class IMS:
 
     def employee(self):
         self.new_window = customtkinter.CTkToplevel(self.root)
-        self.emp_obj = EmpClass(self.new_window)
+        self.emp_obj = empClass(self.new_window)
+    def supplier(self):
+        self.new_window = customtkinter.CTkToplevel(self.root)
+        self.supp_obj = supplierClass(self.new_window)
+    def category(self):
+        self.new_window = customtkinter.CTkToplevel(self.root)
+        self.cat_obj = categoryClass(self.new_window)
+    def product(self):
+        self.new_window = customtkinter.CTkToplevel(self.root)
+        self.prod_obj = productClass(self.new_window)
+    def sales(self):
+        self.new_window = customtkinter.CTkToplevel(self.root)
+        self.sale_obj = salesClass(self.new_window)
+    def billing(self):
+        self.new_window = customtkinter.CTkToplevel(self.root)
+        self.bill_obj = billingClass(self.new_window)
 
 
 
 
 if __name__ == "__main__":
     root = customtkinter.CTk()
-    root.set_appearance_mode("blue")
     obj = IMS(root)
     root.mainloop()
