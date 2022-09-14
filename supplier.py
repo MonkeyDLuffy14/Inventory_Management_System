@@ -11,7 +11,6 @@ class supplierClass:
         self.root.title("Supplier Record")
         self.root.geometry("1100x500+310+170")
         self.root.config(bg="#898AA6")
-        #self.root.resizable(False, False)
 
         ##-----All variables-----##
 

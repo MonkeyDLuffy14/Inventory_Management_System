@@ -9,7 +9,6 @@ class empClass:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1100x500+310+170")
-        #self.root.resizable(False, False)
         self.root.title("Employee Record")
         self.root.config(bg="#898AA6")
 

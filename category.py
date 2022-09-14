@@ -9,7 +9,6 @@ class categoryClass:
     def __init__(self, root):
         self.root = root
         self.root.geometry("1100x500+310+170")
-        #self.root.resizable(False, False)
         self.root.title("Category")
         self.root.config(bg="#898AA6")
 
@@ -120,7 +119,7 @@ class categoryClass:
                 if row == None:
                     messagebox.showerror("Error", "Try Again !!!", parent=self.root)
                 else:
-                    op = messagebox.askyesno("Confirmation", "Do you really want to Delete")
+                    op = messagebox.askyesno("Confirmation", "Do you really want to Delete",parent=self.root)
                     if op == True:
                         cur.execute("delete from category where cid=?", (self.var_cat_id.get(),))
                         con.commit()

@@ -7,6 +7,7 @@ from category import categoryClass
 from product import productClass
 from sales import salesClass
 from billing import billingClass
+import os
 
 class IMS:
     def __init__(self, root):
@@ -22,7 +23,7 @@ class IMS:
         title.place(x=0, y=0, relwidth=1, height=70)
 
         ##------Button_Logout------##
-        logout_btn = customtkinter.CTkButton(self.root, text="LOGOUT", text_font=("times new roman", 15, "bold"), bg_color="#41514E", cursor="hand2", fg_color="#F4F4BF",text_color="#445552")
+        logout_btn = customtkinter.CTkButton(self.root, text="LOGOUT", command=self.logout, text_font=("times new roman", 15, "bold"), bg_color="#41514E", cursor="hand2", fg_color="#F4F4BF",text_color="#445552")
         logout_btn.place(x=1210, y=12, height=40, width=130)
         ##------Label_Clock--------##
         self.lbl_clock = Label(self.root, text="Welcome to Inventory Management System\t\t Date: DD-MM-YY\t\t Time:hh-mm-ss", font=("times new roman", 15), bg="grey")
@@ -49,7 +50,7 @@ class IMS:
         btn_product = customtkinter.CTkButton(sidebar, text="Products", text_font=("Times New Roman", 20, "bold"),command=self.product, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_sales = customtkinter.CTkButton(sidebar, text="Sales", text_font=("Times New Roman", 20, "bold"),command=self.sales, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_billing = customtkinter.CTkButton(sidebar, text="Billing", text_font=("Times New Roman", 20, "bold"),command=self.billing, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_exit = customtkinter.CTkButton(sidebar, text="Exit", text_font=("Times New Roman", 20, "bold"), fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        btn_exit = customtkinter.CTkButton(sidebar, text="Exit", text_font=("Times New Roman", 20, "bold"), command=self.exit, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
 
 
         ##-------Main Content------##
@@ -91,6 +92,11 @@ class IMS:
     def billing(self):
         self.new_window = customtkinter.CTkToplevel(self.root)
         self.bill_obj = billingClass(self.new_window)
+    def logout(self):
+        self.root.destroy()
+        os.system("python Login.py" )
+    def exit(self):
+        self.root.destroy()
 
 
 

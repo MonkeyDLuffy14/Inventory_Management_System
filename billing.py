@@ -11,7 +11,6 @@ class billingClass:
         self.root.title("Billing")
         self.root.geometry("1100x500+310+170")
         self.root.config(bg="#898AA6")
-        #self.root.resizable(False, False)
 
 
 if __name__ == "__main__":
