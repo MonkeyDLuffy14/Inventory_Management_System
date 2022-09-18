@@ -1,3 +1,4 @@
+import re
 from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
@@ -146,26 +147,35 @@ class productClass:
         con=sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
+            name = r'\D+[^!@#$%&*()_>?":]'
+            num = r'\d+'
             if self.var_cat.get()=="Select" or self.var_cat.get()=="Empty" or self.var_sup.get()=="Select" or self.var_sup.get()=="Empty" or self.var_name.get()=="":
                 messagebox.showerror("Error","All fields are required ",parent=self.root)
-            else:
-                cur.execute("Select * from product where name=?",(self.var_name.get(),))
-                row=cur.fetchone()
-                if row!=None:
-                    messagebox.showerror("Error","This Product Already Exist,try different",parent=self.root)
+            if(re.fullmatch(name,str(self.var_name.get()))):
+                if(re.fullmatch(num,str(self.var_price.get()))):
+                    if (re.fullmatch(num, str(self.var_qty.get()))):
+                        cur.execute("Select * from product where name=?",(self.var_name.get(),))
+                        row=cur.fetchone()
+                        if row!=None:
+                             messagebox.showerror("Error","This Product Already Exist,try different",parent=self.root)
+                        else:
+                            cur.execute("Insert into product (Category,Supplier,name,price,qty,status) values(?,?,?,?,?,?)",(
+                                self.var_cat.get(),
+                                self.var_sup.get(),
+                                self.var_name.get(),
+                                self.var_price.get(),
+                                self.var_qty.get(),
+                                self.var_status.get(),
+                            ))
+                            con.commit()
+                            messagebox.showinfo("Success","Product Added Successfully !!",parent=self.root)
+                            self.show()
+                    else:
+                        messagebox.showerror("Error","Invalid Quantity",parent=self.root)
                 else:
-                    cur.execute("Insert into product (Category,Supplier,name,price,qty,status) values(?,?,?,?,?,?)",(
-                                    self.var_cat.get(),
-                                    self.var_sup.get(),
-                                    self.var_name.get(),
-                                    self.var_price.get(),
-                                    self.var_qty.get(),
-                                    self.var_status.get(),
-                    ))
-                    con.commit()
-                    messagebox.showinfo("Success","Product Added Successfully !!",parent=self.root)
-                    self.show()
-
+                    messagebox.showerror("Error","Invalid Price",parent=self.root)
+            else:
+                messagebox.showerror("Error","Invalid Name",parent=self.root)
         except Exception as ex:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self.root)
 

@@ -2,6 +2,7 @@ from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
 from tkinter import ttk, messagebox
+import re
 import sqlite3
 
 
@@ -142,6 +143,11 @@ class empClass:
         con=sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
+            regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+            dob = r'\d{4}-\d{2}-\d{2}'
+            number = r'\d{10}'
+            salary = r'\d+'
+            name = '[A-Za-z]+'
             if self.var_emp_id.get()=="":
                 messagebox.showerror("Error","Employee ID Required ",parent=self.root)
             else:
@@ -149,24 +155,38 @@ class empClass:
                 row=cur.fetchone()
                 if row!=None:
                     messagebox.showerror("Error","This Employee ID Already Assigned,try different",parent=self.root)
+                if (re.fullmatch(name,str(self.var_emp_name.get()))):
+                    if (re.fullmatch(regex, str(self.var_emp_email.get()))):
+                         if (re.fullmatch(dob, str(self.var_emp_dob.get()))) and (re.fullmatch(dob, str(self.var_emp_dob.get()))):
+                             if (re.fullmatch(number, str(self.var_emp_contact.get()))):
+                                if (re.fullmatch(salary, str(self.var_emp_salary.get()))):
+                                   cur.execute("Insert into employee (eid,name,email,gender,contact,dob,doj,pass,utype,address,salary,depart) values(?,?,?,?,?,?,?,?,?,?,?,?)",(
+                                       self.var_emp_id.get(),
+                                       self.var_emp_name.get(),
+                                       self.var_emp_email.get(),
+                                       self.var_emp_gender.get(),
+                                       self.var_emp_contact.get(),
+                                       self.var_emp_dob.get(),
+                                       self.var_emp_doj.get(),
+                                       self.var_emp_pass.get(),
+                                       self.var_emp_utype.get(),
+                                       self.txt_add.get('1.0',END),
+                                       self.var_emp_salary.get(),
+                                       self.var_emp_depart.get(),
+                                   ))
+                                   con.commit()
+                                   messagebox.showinfo("Success","Employee Added Successfully !!",parent=self.root)
+                                   self.show()
+                                else:
+                                   messagebox.showerror("Error", "Invalid Salary ", parent=self.root)
+                             else:
+                                messagebox.showerror("Error", "Invalid Contact Number", parent=self.root)
+                         else:
+                             messagebox.showerror("Error", "Invalid Date Format", parent=self.root)
+                    else:
+                        messagebox.showerror("Error", "Invalid Email Format", parent=self.root)
                 else:
-                    cur.execute("Insert into employee (eid,name,email,gender,contact,dob,doj,pass,utype,address,salary,depart) values(?,?,?,?,?,?,?,?,?,?,?,?)",(
-                                    self.var_emp_id.get(),
-                                    self.var_emp_name.get(),
-                                    self.var_emp_email.get(),
-                                    self.var_emp_gender.get(),
-                                    self.var_emp_contact.get(),
-                                    self.var_emp_dob.get(),
-                                    self.var_emp_doj.get(),
-                                    self.var_emp_pass.get(),
-                                    self.var_emp_utype.get(),
-                                    self.txt_add.get('1.0',END),
-                                    self.var_emp_salary.get(),
-                                    self.var_emp_depart.get(),
-                    ))
-                    con.commit()
-                    messagebox.showinfo("Success","Empployee Added Successfully !!",parent=self.root)
-                    self.show()
+                    messagebox.showerror("Error","Invalid Name Format",parent=self.root)
 
         except Exception as ex:
             messagebox.showerror("Error",f"Error due to : {str(ex)}",parent=self.root)

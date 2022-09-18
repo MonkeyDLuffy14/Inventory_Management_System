@@ -1,3 +1,4 @@
+import re
 from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
@@ -94,24 +95,35 @@ class supplierClass:
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
+            number = r'\d+'
+            contact = r'\d{10}'
+            name = r'\D+[^!@#$%&*()_>?":]'
             if self.var_sup_invoice.get() == "":
                 messagebox.showerror("Error", "Invoice must be required ", parent=self.root)
-            else:
-                cur.execute("Select * from supplier where invoice=?", (self.var_sup_invoice.get(),))
-                row = cur.fetchone()
-                if row != None:
-                    messagebox.showerror("Error", "This Invoice no. Already Assigned,try different", parent=self.root)
+            if(re.fullmatch(number,str(self.var_sup_invoice.get()))):
+                if(re.fullmatch(name,str(self.var_sup_name.get()))):
+                    if(re.fullmatch(contact,str(self.var_sup_contact.get()))):
+                        cur.execute("Select * from supplier where invoice=?", (self.var_sup_invoice.get(),))
+                        row = cur.fetchone()
+                        if row != None:
+                            messagebox.showerror("Error", "This Invoice no. Already Assigned,try different", parent=self.root)
+                        else:
+                            cur.execute("Insert into supplier (invoice,name,contact,desc) values(?,?,?,?)",
+                                        (
+                                            self.var_sup_invoice.get(),
+                                            self.var_sup_name.get(),
+                                            self.var_sup_contact.get(),
+                                            self.txt_desc.get('1.0', END),
+                                        ))
+                            con.commit()
+                            messagebox.showinfo("Success", "Supplier Added Successfully !!", parent=self.root)
+                            self.show()
+                    else:
+                        messagebox.showerror("Error","Invalid Contact Number",parent=self.root)
                 else:
-                    cur.execute("Insert into supplier (invoice,name,contact,desc) values(?,?,?,?)",
-                        (
-                            self.var_sup_invoice.get(),
-                            self.var_sup_name.get(),
-                            self.var_sup_contact.get(),
-                            self.txt_desc.get('1.0', END),
-                        ))
-                    con.commit()
-                    messagebox.showinfo("Success", "Supplier Added Successfully !!", parent=self.root)
-                    self.show()
+                    messagebox.showerror("Error","Invalid Name",parent=self.root)
+            else:
+                messagebox.showerror("Error","Invalid Invoice",parent=self.root)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
 

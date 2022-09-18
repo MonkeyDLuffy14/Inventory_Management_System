@@ -13,6 +13,8 @@ class billingClass:
         self.root.config(bg="#898AA6")
 
 
+
+
 if __name__ == "__main__":
     root = customtkinter.CTk()
     obj = billingClass(root)

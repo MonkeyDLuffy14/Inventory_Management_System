@@ -1,3 +1,4 @@
+import re
 from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
@@ -66,9 +67,10 @@ class categoryClass:
         con = sqlite3.connect(database=r'ims.db')
         cur = con.cursor()
         try:
+            name = r'\D+[^!@#$%&*()_>?":]'
             if self.var_cat_name.get() == "":
                 messagebox.showerror("Error", "Category name must be required ", parent=self.root)
-            else:
+            if(re.fullmatch(name,str(self.var_cat_name.get()))):
                 cur.execute("Select * from category where name=?", (self.var_cat_name.get(),))
                 row = cur.fetchone()
                 if row != None:
@@ -82,6 +84,8 @@ class categoryClass:
                     messagebox.showinfo("Success", "Category Added Successfully !!", parent=self.root)
                     self.show()
                     self.var_cat_name.set("")
+            else:
+                messagebox.showerror("Error","Invalid Name",parent=self.root)
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
 
