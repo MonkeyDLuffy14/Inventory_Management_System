@@ -1,4 +1,5 @@
 from tkinter import *
+import sqlite3
 import customtkinter
 from PIL import Image, ImageTk
 from employee import empClass
@@ -16,7 +17,10 @@ class IMS:
         self.root.geometry("1350x700+0+0")
         #self.root.geometry("1600x780+0+0")
 
-
+        self.emp = StringVar()
+        self.supp = StringVar()
+        self.cat = StringVar()
+        self.prod = StringVar()
         ##------Title------##
         self.icon = PhotoImage(file="Images/inventory_icon.png")
         title = customtkinter.CTkLabel(self.root, text="INVENTORY MANAGEMENT SYSTEM", image=self.icon, compound=LEFT, text_font=("times new roman", 40, "bold"), bg_color="#41514E", anchor="w", padx=20)
@@ -54,20 +58,26 @@ class IMS:
 
 
         ##-------Main Content------##
-        self.lbl_emp = Label(self.root,text="Total Employee \n[ 0 ] ",font=("Times New Roman",20), relief=RIDGE,bg="#D12C5C",bd=5,fg="white")
+        self.lbl_emp = Label(self.root,text="Total Employee \n[ 0 ] ",textvariable=self.emp,font=("Times New Roman",20), relief=RIDGE,bg="#D12C5C",bd=5,fg="white")
         self.lbl_emp.place(x=400,y=150,height=150,width=300)
 
-        self.lbl_supplier = Label(self.root,text="Total Supplier \n[ 0 ] ",font=("Times New Roman",20), relief=RIDGE,bg="#577A38",bd=5,fg="white")
+        self.lbl_supplier = Label(self.root,text="Total Supplier \n[ 0 ] ",textvariable=self.supp,font=("Times New Roman",20), relief=RIDGE,bg="#577A38",bd=5,fg="white")
         self.lbl_supplier.place(x=800,y=150,height=150,width=300)
 
-        self.lbl_category = Label(self.root,text="Total Category \n[ 0 ] ",font=("Times New Roman",20), relief=RIDGE,bg="#BD50B5",bd=5,fg="white")
+        self.lbl_category = Label(self.root,text="Total Category \n[ 0 ] ",textvariable=self.cat,font=("Times New Roman",20), relief=RIDGE,bg="#BD50B5",bd=5,fg="white")
         self.lbl_category.place(x=1200,y=150,height=150,width=300)
 
-        self.lbl_product = Label(self.root,text="Total Product \n[ 0 ] ",font=("Times New Roman",20), relief=RIDGE,bg="#53B0D3",bd=5,fg="white")
+        self.lbl_product = Label(self.root,text="Total Product \n[ 0 ] ",textvariable=self.prod,font=("Times New Roman",20), relief=RIDGE,bg="#53B0D3",bd=5,fg="white")
         self.lbl_product.place(x=400,y=350,height=150,width=300)
 
         self.lbl_sales = Label(self.root,text="Total Sales \n[ 0 ] ",font=("Times New Roman",20), relief=RIDGE,bg="#D5AC55",bd=5,fg="white")
         self.lbl_sales.place(x=800,y=350,height=150,width=300)
+
+        self.emptotal()
+        self.suppliertotal()
+        self.categorytotal()
+        self.producttotal()
+
 
         ##--------Footer-----##
         lbl_footer = Label(self.root, text="IMS-Inventory Management System || Zoro Private Limited\n For any Query contact 87979xx087", font=("times new roman", 12), bg="grey").pack(side=BOTTOM,fill=X)
@@ -98,6 +108,51 @@ class IMS:
     def exit(self):
         self.root.destroy()
 
+
+    def emptotal(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select COUNT(eid) from employee")
+            row = cur.fetchone()
+            count = list(str(row)).pop(1)
+            print(count)
+            self.emp.set(str("Total Employee \n"+"["+count+"]"))
+        except Exception as ex:
+            print(ex)
+    def suppliertotal(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select COUNT(invoice) from supplier")
+            row = cur.fetchone()
+            count = list(str(row)).pop(1)
+            print(count)
+            self.supp.set(str("Total Supplier \n"+"["+count+"]"))
+        except Exception as ex:
+            print(ex)
+    def categorytotal(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select COUNT(cid) from category")
+            row = cur.fetchone()
+            count = list(str(row)).pop(1)
+            print(count)
+            self.cat.set(str("Total Category \n"+"["+count+"]"))
+        except Exception as ex:
+            print(ex)
+    def producttotal(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select COUNT(pid) from product")
+            row = cur.fetchone()
+            count = list(str(row)).pop(1)
+            print(count)
+            self.prod.set(str("Total Product \n"+"["+count+"]"))
+        except Exception as ex:
+            print(ex)
 
 
 
