@@ -17,6 +17,9 @@ class IMS:
         self.root.geometry("1350x700+0+0")
         #self.root.geometry("1600x780+0+0")
 
+
+        #All variables
+
         self.emp = StringVar()
         self.supp = StringVar()
         self.cat = StringVar()
@@ -116,7 +119,6 @@ class IMS:
             cur.execute("select COUNT(eid) from employee")
             row = cur.fetchone()
             count = list(str(row)).pop(1)
-            print(count)
             self.emp.set(str("Total Employee \n"+"["+count+"]"))
         except Exception as ex:
             print(ex)
@@ -127,7 +129,6 @@ class IMS:
             cur.execute("select COUNT(invoice) from supplier")
             row = cur.fetchone()
             count = list(str(row)).pop(1)
-            print(count)
             self.supp.set(str("Total Supplier \n"+"["+count+"]"))
         except Exception as ex:
             print(ex)
@@ -138,7 +139,6 @@ class IMS:
             cur.execute("select COUNT(cid) from category")
             row = cur.fetchone()
             count = list(str(row)).pop(1)
-            print(count)
             self.cat.set(str("Total Category \n"+"["+count+"]"))
         except Exception as ex:
             print(ex)
@@ -149,7 +149,6 @@ class IMS:
             cur.execute("select COUNT(pid) from product")
             row = cur.fetchone()
             count = list(str(row)).pop(1)
-            print(count)
             self.prod.set(str("Total Product \n"+"["+count+"]"))
         except Exception as ex:
             print(ex)
