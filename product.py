@@ -60,7 +60,7 @@ class productClass:
         txt_qty=Entry(Product_Frame,textvariable=self.var_qty, font=("goudy old style",15),bg="lightyellow").place(x=150,y=300,width=200)
 
         #--status--#
-        cmb_status=ttk.Combobox(Product_Frame,textvariable=self.var_status,values=("Active","Inctive"),state='readonly',justify=CENTER, font=("goudy old style",15))
+        cmb_status=ttk.Combobox(Product_Frame,textvariable=self.var_status,values=("Active","Inactive"),state='readonly',justify=CENTER, font=("goudy old style",15))
         cmb_status.place(x=150,y=360,width=200)
         cmb_status.current(0)
 

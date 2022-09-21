@@ -44,13 +44,16 @@ class billingClass:
         txt_name=Entry(bill_Frame,textvariable=self.var_name, font=("goudy old style",15),bg="lightyellow").place(x=150,y=60,width=200)
         txt_contact = Entry(bill_Frame,textvariable=self.var_name, font=("goudy old style", 15), bg="lightyellow").place(x=150, y=120, width=200)
 
-        cmb_cat=ttk.Combobox(bill_Frame,postcommand=self.fetch_prod(),textvariable=self.var_category,values=self.cat_list,state='readonly',justify=CENTER, font=("goudy old style",15))
+        cmb_cat=ttk.Combobox(bill_Frame,textvariable=self.var_category,state='readonly',justify=CENTER, font=("goudy old style",15))
+        cmb_cat['values'] = self.cat_list
         cmb_cat.place(x=150,y=180,width=200)
         cmb_cat.current(0)
+        self.var_category.trace('w',self.fetch_prod)
 
         cmb_prod=ttk.Combobox(bill_Frame,textvariable=self.var_product,values=self.prod_list,state='readonly',justify=CENTER, font=("goudy old style",15))
+        cmb_prod['values'] = self.prod_list
         cmb_prod.place(x=150,y=240,width=200)
-        cmb_prod.current(0)
+        # cmb_prod.current(0)
 
         txt_qty=Entry(bill_Frame,textvariable=self.var_qty, font=("goudy old style",15),bg="lightyellow").place(x=150,y=300,width=200)
         txt_total=Entry(bill_Frame,textvariable=self.var_total,state='readonly', font=("goudy old style",15),bg="lightyellow").place(x=150,y=360,width=200)
@@ -74,18 +77,22 @@ class billingClass:
                     self.cat_list.append(i[0])
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
-    def fetch_prod(self):
+    def fetch_prod(self, cmb_prod=None, *args):
         self.prod_list.append("Empty")
         try:
             con = sqlite3.connect(database=r'ims.db')
             cur = con.cursor()
             cur.execute("select name from product where Category=?",(self.var_category.get(),))
             sup = cur.fetchall()
+            print((self.var_category.get(),))
+            print(sup)
             if len(sup) > 0:
                 del self.prod_list[:]
                 self.prod_list.append("Select")
                 for i in sup:
                     self.prod_list.append(i[0])
+            print(self.prod_list)
+
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
 

@@ -14,6 +14,7 @@ class salesClass:
 
 
 
+
 if __name__ == "__main__":
     root = customtkinter.CTk()
     obj = salesClass(root)
