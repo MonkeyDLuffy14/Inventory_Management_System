@@ -84,15 +84,14 @@ class billingClass:
             cur = con.cursor()
             cur.execute("select name from product where Category=?",(self.var_category.get(),))
             sup = cur.fetchall()
-            print((self.var_category.get(),))
-            print(sup)
             if len(sup) > 0:
                 del self.prod_list[:]
                 self.prod_list.append("Select")
                 for i in sup:
                     self.prod_list.append(i[0])
+                self.prod_list = [i for i,in sup]
             print(self.prod_list)
-
+            cmb_prod['values'] = self.prod_list
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to : {str(ex)}", parent=self.root)
 
