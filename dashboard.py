@@ -24,6 +24,7 @@ class IMS:
         self.supp = StringVar()
         self.cat = StringVar()
         self.prod = StringVar()
+        self.sale = StringVar()
         ##------Title------##
         self.icon = PhotoImage(file="Images/inventory_icon.png")
         title = customtkinter.CTkLabel(self.root, text="INVENTORY MANAGEMENT SYSTEM", image=self.icon, compound=LEFT, text_font=("times new roman", 40, "bold"), bg_color="#41514E", anchor="w", padx=20)
@@ -49,13 +50,11 @@ class IMS:
 
         lbl_menu=Label(sidebar, text="Menu", font=("Times New Roman", 20), bg="#009688").pack(side=TOP, fill=X)
 
-        #self.icon_side = PhotoImage(file="Images/side.png")
-        #btn_emp = Button(sidebar, text="Employee", font=("Times New Roman", 20, "bold"),image=self.icon_side,compound=LEFT,padx=10,anchor="w",bd=3,cursor="hand2",bg="#222831",activebackground="light blue").pack(side=TOP,fill=X)
         btn_emp = customtkinter.CTkButton(sidebar, text="Employee", text_font=("Times New Roman", 20, "bold"), command=self.employee, fg_color="#222831", corner_radius=0,bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_supplier = customtkinter.CTkButton(sidebar, text="Supplier",  text_font=("Times New Roman", 20, "bold"),command=self.supplier, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_category = customtkinter.CTkButton(sidebar, text="Category", text_font=("Times New Roman", 20, "bold"),command=self.category, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_product = customtkinter.CTkButton(sidebar, text="Products", text_font=("Times New Roman", 20, "bold"),command=self.product, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
-        btn_sales = customtkinter.CTkButton(sidebar, text="Sales", text_font=("Times New Roman", 20, "bold"),command=self.sales, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
+        # btn_sales = customtkinter.CTkButton(sidebar, text="Sales", text_font=("Times New Roman", 20, "bold"),command=self.sales, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_billing = customtkinter.CTkButton(sidebar, text="Billing", text_font=("Times New Roman", 20, "bold"),command=self.billing, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
         btn_exit = customtkinter.CTkButton(sidebar, text="Exit", text_font=("Times New Roman", 20, "bold"), command=self.exit, fg_color="#222831", corner_radius=0, bd=2, cursor="hand2").pack(side=TOP, fill=X)
 
@@ -73,14 +72,14 @@ class IMS:
         self.lbl_product = Label(self.root,text="Total Product \n[ 0 ] ",textvariable=self.prod,font=("Times New Roman",20), relief=RIDGE,bg="#53B0D3",bd=5,fg="white")
         self.lbl_product.place(x=400,y=350,height=150,width=300)
 
-        self.lbl_sales = Label(self.root,text="Total Sales \n[ 0 ] ",font=("Times New Roman",20), relief=RIDGE,bg="#D5AC55",bd=5,fg="white")
+        self.lbl_sales = Label(self.root,text="Total Sales \n[ 0 ] ",textvariable=self.sale,font=("Times New Roman",20), relief=RIDGE,bg="#D5AC55",bd=5,fg="white")
         self.lbl_sales.place(x=800,y=350,height=150,width=300)
 
         self.emptotal()
         self.suppliertotal()
         self.categorytotal()
         self.producttotal()
-
+        self.saletotal()
 
         ##--------Footer-----##
         lbl_footer = Label(self.root, text="IMS-Inventory Management System || Zoro Private Limited\n For any Query contact 87979xx087", font=("times new roman", 12), bg="grey").pack(side=BOTTOM,fill=X)
@@ -150,6 +149,17 @@ class IMS:
             row = cur.fetchone()
             count = list(str(row)).pop(1)
             self.prod.set(str("Total Product \n"+"["+count+"]"))
+        except Exception as ex:
+            print(ex)
+
+    def saletotal(self):
+        con = sqlite3.connect(database=r'ims.db')
+        cur = con.cursor()
+        try:
+            cur.execute("select COUNT(bid) from billing")
+            row = cur.fetchone()
+            count = list(str(row)).pop(1)
+            self.sale.set(str("Total Sales \n"+"["+count+"]"))
         except Exception as ex:
             print(ex)
 
