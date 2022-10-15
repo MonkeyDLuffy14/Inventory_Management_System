@@ -230,7 +230,7 @@ class billingClass:
                 if row==None:
                     messagebox.showerror("Error","Invalid Billing ID",parent=self.root)
                 else:
-                    op = messagebox.askyesno("Confirmation", "Do you really want to Delete")
+                    op = messagebox.askyesno("Confirmation", "Do you really want to Delete",parent=self.root)
                     if op == True:
                         cur.execute("delete from billing where bid=?",(self.var_bid.get(),))
                         con.commit()

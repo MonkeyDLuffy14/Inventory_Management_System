@@ -37,8 +37,6 @@ class Login_System:
 
         hr = Label(login_frame, bg="lightgray").place(x=50, y=370, width=250, height=2)
 
-        hr = Label(login_frame, text="OR", bg="white", fg="lightgray", font=("times new roman", 15, "bold")).place(x=150, y=355)
-
         # ===Frame2=======
         register_frame = Frame(self.root, bd=2, relief=RIDGE, bg="white")
         register_frame.place(x=650, y=570, width=350, height=60)
