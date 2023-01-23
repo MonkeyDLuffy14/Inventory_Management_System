@@ -1,1 +1,1 @@
-# Inventory_Management_System in Python using tkinter module and customtkinter library
+# Inventory_Management_System in Python using tkinter and customtkinter library
